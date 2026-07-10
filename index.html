@@ -181,6 +181,43 @@
   .disagree .synth { margin-top: 8px; font-size: 16.5px; color: #fff; border-top: 1px solid rgba(255,255,255,.14); padding-top: 22px; }
   .disagree .synth b { color: #d9ccff; }
 
+  /* ---------- Venn / convergence map ---------- */
+  .venn-wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 30px; align-items: center; }
+  @media (max-width: 860px){ .venn-wrap { grid-template-columns: 1fr; gap: 18px; } }
+  .venn-svg {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 14px;
+  }
+  .venn-svg svg { width: 100%; height: auto; display: block; }
+  .lens { transition: fill-opacity .3s, stroke-opacity .3s; }
+  .region { cursor: pointer; }
+  .region text { transition: opacity .2s; }
+  .region-label { font-family: 'Inter', sans-serif; font-weight: 600; fill: var(--ink); font-size: 14.5px; }
+  .region.core .region-label { font-family: 'Fraunces', serif; font-size: 18px; fill: var(--hd); }
+  .region:hover .region-label { text-decoration: underline; }
+  #hl { pointer-events: none; opacity: 0; transition: opacity .25s; }
+
+  .venn-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .lens-chip { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--ink-2); font-weight: 600; }
+  .lens-chip .swatch { width: 11px; height: 11px; border-radius: 3px; }
+
+  .venn-detail { }
+  .venn-detail .rtype { font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--hd); margin-bottom: 8px; }
+  .venn-detail h3 { font-size: 24px; margin: 0 0 8px; }
+  .venn-detail .meaning { font-size: 16px; color: var(--ink-2); margin: 0 0 18px; }
+  .venn-detail .conv-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); margin-bottom: 10px; }
+  .venn-detail .tests { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .venn-detail .tests span { background: var(--line-2); color: var(--ink-2); font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; }
+  .region-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+  .region-pills button {
+    font-family: 'Inter'; font-size: 12.5px; font-weight: 600; cursor: pointer;
+    padding: 7px 13px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--card); color: var(--ink-2); transition: .15s;
+  }
+  .region-pills button.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .venn-detail .hint { font-size: 13px; color: var(--ink-3); margin-top: 16px; }
+  .venn-detail .hint a { color: var(--hd); font-weight: 600; text-decoration: none; }
+
   /* ---------- Guide (partner / business) ---------- */
   .guide-tabs { display: flex; gap: 8px; margin-bottom: 30px; flex-wrap: wrap; }
   .guide-tabs button {
@@ -250,6 +287,7 @@
     <nav class="nav-links">
       <a href="#data">The Data</a>
       <a href="#pattern">Core Pattern</a>
+      <a href="#venn">Convergence Map</a>
       <a href="#guide">Working &amp; Loving</a>
       <a href="#energy">Energy</a>
       <a href="#short">Short Version</a>
@@ -438,8 +476,59 @@
   </div>
 </section>
 
+<!-- VENN / CONVERGENCE MAP -->
+<section id="venn">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The convergence map</div>
+      <h2>Six tests, three lenses, one core</h2>
+      <p>A six-circle Venn would be unreadable, so the six assessments are grouped into three lenses by what they measure. Where the lenses overlap is where the tests agree. Tap any region to see which tests converge there.</p>
+    </div>
+
+    <div class="venn-wrap">
+      <div>
+        <div class="venn-svg">
+          <svg viewBox="0 0 680 510" role="img" aria-labelledby="venn-title venn-desc">
+            <title id="venn-title">Convergence Venn of Jordan's six assessments grouped into three lenses</title>
+            <desc id="venn-desc">Three overlapping circles — powered by people, driven to excellence, and bursts and recognition — with shared traits in the overlaps and a common core where all three agree.</desc>
+
+            <circle id="lens-people" class="lens" cx="270" cy="230" r="150" fill="#16b3c8" fill-opacity="0.16" stroke="#0f8ea0" stroke-width="2" stroke-opacity="0.7"/>
+            <circle id="lens-excellence" class="lens" cx="410" cy="230" r="150" fill="#2f6df6" fill-opacity="0.16" stroke="#1f57cf" stroke-width="2" stroke-opacity="0.7"/>
+            <circle id="lens-recognition" class="lens" cx="340" cy="350" r="150" fill="#6c4bd8" fill-opacity="0.16" stroke="#5738bf" stroke-width="2" stroke-opacity="0.7"/>
+
+            <circle id="hl" cx="340" cy="268" r="52" fill="none" stroke="var(--hd)" stroke-width="2.5" stroke-dasharray="4 4"/>
+
+            <g class="region" data-key="people-only" role="button" tabindex="0"><text class="region-label" text-anchor="middle" x="180" y="200"><tspan x="180">Wins the</tspan><tspan x="180" dy="18">room</tspan></text></g>
+            <g class="region" data-key="excellence-only" role="button" tabindex="0"><text class="region-label" text-anchor="middle" x="500" y="200"><tspan x="500">Fast calls,</tspan><tspan x="500" dy="18">high bar</tspan></text></g>
+            <g class="region" data-key="recognition-only" role="button" tabindex="0"><text class="region-label" text-anchor="middle" x="340" y="424"><tspan x="340">Burns bright,</tspan><tspan x="340" dy="18">then fades</tspan></text></g>
+            <g class="region" data-key="lead" role="button" tabindex="0"><text class="region-label" text-anchor="middle" x="340" y="158"><tspan x="340">Leads toward</tspan><tspan x="340" dy="18">a goal</tspan></text></g>
+            <g class="region" data-key="praise" role="button" tabindex="0"><text class="region-label" text-anchor="middle" x="243" y="316"><tspan x="243">Bonds through</tspan><tspan x="243" dy="18">praise</tspan></text></g>
+            <g class="region" data-key="operator" role="button" tabindex="0"><text class="region-label" text-anchor="middle" x="437" y="316"><tspan x="437">Needs an</tspan><tspan x="437" dy="18">operator</tspan></text></g>
+            <g class="region core" data-key="core" role="button" tabindex="0"><text class="region-label" text-anchor="middle" x="340" y="264"><tspan x="340">The core</tspan><tspan x="340" dy="19">Jordan</tspan></text></g>
+          </svg>
+        </div>
+        <div class="venn-legend">
+          <div class="lens-chip"><span class="swatch" style="background:#16b3c8"></span> Powered by people</div>
+          <div class="lens-chip"><span class="swatch" style="background:#2f6df6"></span> Driven to excellence</div>
+          <div class="lens-chip"><span class="swatch" style="background:#6c4bd8"></span> Bursts &amp; recognition</div>
+        </div>
+      </div>
+
+      <div class="venn-detail">
+        <div class="rtype" id="v-type">All three lenses</div>
+        <h3 id="v-title">The core Jordan</h3>
+        <p class="meaning" id="v-meaning">Orchestrates people toward high-impact goals — running on recognition and freedom, in bursts. This is where nearly every test agrees.</p>
+        <div class="conv-label">Tests that converge here</div>
+        <div class="tests" id="v-tests"></div>
+        <div class="region-pills" id="v-pills"></div>
+        <div class="hint">The one place the tests <em>clash</em> — "wait for invitation" vs. constant initiation — sits outside every circle. <a href="#disagree-anchor">See where they disagree ↓</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- DISAGREE -->
-<section>
+<section id="disagree-anchor">
   <div class="wrap">
     <div class="disagree">
       <div class="kicker" style="color:#b49dff; font-size:12.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:12px;">Where the frameworks disagree</div>
@@ -673,6 +762,51 @@
     t.classList.add('active');
     document.getElementById(t.dataset.tab).classList.add('active');
   }));
+
+  // Convergence Venn
+  const regions = {
+    'core':             { type:'All three lenses',          title:'The core Jordan',      cx:340, cy:268, r:52, lenses:['people','excellence','recognition'], meaning:'Orchestrates people toward high-impact goals — running on recognition and freedom, in bursts. This is where nearly every test agrees.', tests:['DISC','Values','16 Personalities','CliftonStrengths','Love Languages','Human Design'] },
+    'lead':             { type:'People × Excellence',        title:'Leads toward a goal',   cx:340, cy:170, r:44, lenses:['people','excellence'], meaning:'Persuasion with a purpose — wins people over and points them at an outcome.', tests:['ENFJ','Influence 74','Dominance 58','Woo','Maximizer'] },
+    'operator':         { type:'Excellence × Bursts',        title:'Needs an operator',     cx:437, cy:320, r:44, lenses:['excellence','recognition'], meaning:'Architects fast and to a high bar — but can’t sustain the daily grind alone. Someone else has to own the recurring core.', tests:['Splenic','Projector','Arranger','Steadiness 14','Conscientiousness 66'] },
+    'praise':           { type:'People × Bursts',            title:'Bonds through praise',  cx:243, cy:320, r:44, lenses:['people','recognition'], meaning:'Fed by people and, specifically, by their spoken affirmation — recognition is fuel.', tests:['Woo','Positivity','Words of Affirmation','Success / Bitterness'] },
+    'people-only':      { type:'Only: powered by people',    title:'Wins the room',         cx:185, cy:205, r:44, lenses:['people'], meaning:'Recharges in a crowd and wins over strangers on contact — a claim only the people-facing tests make.', tests:['Extraverted 78%','Woo'] },
+    'excellence-only':  { type:'Only: driven to excellence', title:'Fast calls, high bar',  cx:495, cy:205, r:44, lenses:['excellence'], meaning:'Decides in the meeting and holds the output to an excellent standard — quick, committed, exacting.', tests:['Dominance 58','Judging 68%','Conscientiousness 66','Maximizer','Strategic'] },
+    'recognition-only': { type:'Only: bursts & recognition', title:'Burns bright, then fades', cx:340, cy:430, r:44, lenses:['recognition'], meaning:'Energy comes in bursts, not a steady supply — and needs freedom to move. The wiring layer no behavior test captures.', tests:['Projector','Steadiness 14','Freedom 71'] }
+  };
+  const order = ['core','lead','operator','praise','people-only','excellence-only','recognition-only'];
+  const shortName = { 'core':'The core','lead':'Leads to a goal','operator':'Needs an operator','praise':'Bonds through praise','people-only':'Wins the room','excellence-only':'Fast calls','recognition-only':'Bursts, then fades' };
+  const lensEls = {
+    people: document.getElementById('lens-people'),
+    excellence: document.getElementById('lens-excellence'),
+    recognition: document.getElementById('lens-recognition')
+  };
+  const hl = document.getElementById('hl');
+  const pillWrap = document.getElementById('v-pills');
+
+  function selectRegion(key) {
+    const r = regions[key];
+    if (!r) return;
+    document.getElementById('v-type').textContent = r.type;
+    document.getElementById('v-title').textContent = r.title;
+    document.getElementById('v-meaning').textContent = r.meaning;
+    document.getElementById('v-tests').innerHTML = r.tests.map(t => '<span>' + t + '</span>').join('');
+    hl.setAttribute('cx', r.cx); hl.setAttribute('cy', r.cy); hl.setAttribute('r', r.r); hl.style.opacity = 1;
+    for (const [name, el] of Object.entries(lensEls)) {
+      const on = r.lenses.includes(name);
+      el.setAttribute('fill-opacity', on ? 0.30 : 0.07);
+      el.setAttribute('stroke-opacity', on ? 0.9 : 0.35);
+    }
+    document.querySelectorAll('#v-pills button').forEach(b => b.classList.toggle('active', b.dataset.key === key));
+    document.querySelectorAll('.region').forEach(g => g.querySelector('text').style.opacity = (g.dataset.key === key ? 1 : 0.55));
+  }
+
+  pillWrap.innerHTML = order.map(k => '<button data-key="' + k + '">' + shortName[k] + '</button>').join('');
+  pillWrap.querySelectorAll('button').forEach(b => b.addEventListener('click', () => selectRegion(b.dataset.key)));
+  document.querySelectorAll('.region').forEach(g => {
+    g.addEventListener('click', () => selectRegion(g.dataset.key));
+    g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectRegion(g.dataset.key); } });
+  });
+  selectRegion('core');
 </script>
 </body>
 </html>
