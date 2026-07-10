@@ -218,6 +218,30 @@
   .venn-detail .hint { font-size: 13px; color: var(--ink-3); margin-top: 16px; }
   .venn-detail .hint a { color: var(--hd); font-weight: 600; text-decoration: none; }
 
+  /* ---------- Raw grid / matrix ---------- */
+  .matrix-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); }
+  table.matrix { border-collapse: collapse; width: 100%; min-width: 880px; }
+  .matrix th, .matrix td { padding: 11px 6px; text-align: center; border-bottom: 1px solid var(--line-2); }
+  .matrix thead th { vertical-align: bottom; font-size: 12px; font-weight: 600; color: var(--ink-2); line-height: 1.25; }
+  .matrix thead th .cnt { display: block; margin-top: 7px; font-size: 11px; font-weight: 700; color: var(--ink-3); }
+  .matrix thead th.strong .cnt { color: var(--hd); }
+  .matrix thead th.clash { background: rgba(243,156,18,.08); }
+  .matrix thead th.clash .cnt { color: #c77f0a; }
+  .matrix thead th.corner { position: sticky; left: 0; z-index: 3; background: var(--card); text-align: left; font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; border-right: 1px solid var(--line); }
+  .matrix tbody th {
+    text-align: left; white-space: nowrap; font-size: 13.5px; font-weight: 700;
+    position: sticky; left: 0; z-index: 2; background: var(--card); border-right: 1px solid var(--line);
+    display: flex; align-items: center; gap: 9px; padding: 11px 14px 11px 6px;
+  }
+  .matrix tbody tr:hover td { background: var(--line-2); }
+  .matrix tbody th .chip { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+  .matrix td.clash { background: rgba(243,156,18,.05); }
+  .m-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; vertical-align: middle; }
+  .m-empty { color: #d4d8e0; font-weight: 700; }
+  .matrix-legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 16px; font-size: 13px; color: var(--ink-2); }
+  .matrix-legend .li { display: flex; align-items: center; gap: 8px; }
+  .matrix-legend .m-dot.demo { background: var(--ink-3); }
+
   /* ---------- Guide (partner / business) ---------- */
   .guide-tabs { display: flex; gap: 8px; margin-bottom: 30px; flex-wrap: wrap; }
   .guide-tabs button {
@@ -288,6 +312,7 @@
       <a href="#data">The Data</a>
       <a href="#pattern">Core Pattern</a>
       <a href="#venn">Convergence Map</a>
+      <a href="#matrix">The Grid</a>
       <a href="#guide">Working &amp; Loving</a>
       <a href="#energy">Energy</a>
       <a href="#short">Short Version</a>
@@ -523,6 +548,25 @@
         <div class="region-pills" id="v-pills"></div>
         <div class="hint">The one place the tests <em>clash</em> — "wait for invitation" vs. constant initiation — sits outside every circle. <a href="#disagree-anchor">See where they disagree ↓</a></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- RAW GRID / MATRIX -->
+<section id="matrix">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The raw grid</div>
+      <h2>Every overlap, ungrouped</h2>
+      <p>The convergence map groups the six tests into three lenses — my editorial call. This is the underlying data with no grouping: each row is a test, each column a trait, a dot wherever that test points to it. Columns with more dots are stronger agreement; single-dot columns are what only one test sees. Hover any dot for the specific score.</p>
+    </div>
+    <div class="matrix-scroll">
+      <table class="matrix" id="matrix-table"></table>
+    </div>
+    <div class="matrix-legend">
+      <div class="li"><span class="m-dot demo"></span> A test supports this trait (hover for the score)</div>
+      <div class="li"><span class="m-empty">·</span> No signal from that test</div>
+      <div class="li"><span class="m-dot" style="background:#e0393e"></span> The lone contradiction — Human Design's "wait for invitation"</div>
     </div>
   </div>
 </section>
@@ -807,6 +851,59 @@
     g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectRegion(g.dataset.key); } });
   });
   selectRegion('core');
+
+  // Raw grid / matrix
+  const M = {
+    tests: [
+      { k:'disc',    n:'DISC',             c:'#2f6df6' },
+      { k:'values',  n:'Values',           c:'#27ae60' },
+      { k:'mbti',    n:'16 Personalities', c:'#16b3c8' },
+      { k:'clifton', n:'CliftonStrengths', c:'#7b3fb3' },
+      { k:'love',    n:'Love Languages',   c:'#e0489b' },
+      { k:'hd',      n:'Human Design',     c:'#6c4bd8' }
+    ],
+    traits: ['Orchestrates, doesn’t grind','Leads through people','Runs on recognition','Fast, committed decisions','Holds a high bar','Freedom over convention','Research, then trial-and-error','Thinks in patterns','Names what drives him','Love spoken aloud','Same under pressure','Initiates (vs. waits)'],
+    support: {
+      disc:    { 0:'Steadiness 14 — no tolerance for routine', 1:'Influence 74', 3:'Dominance 58', 4:'Conscientiousness 66', 10:'Natural ≈ adaptive — no work mask', 11:'init' },
+      values:  { 5:'Leadership 76 · Impact 75 · Freedom 71 · Tradition 30', 8:'Names the targets he moves toward' },
+      mbti:    { 1:'Extraverted 78% · Feeling 63%', 3:'Judging 68%', 5:'Intuitive 73% — challenges convention', 7:'Intuitive 73% — patterns over detail', 11:'init' },
+      clifton: { 0:'Arranger', 1:'Woo · Positivity', 2:'Woo · Positivity', 4:'Maximizer', 6:'Strategic', 11:'init' },
+      love:    { 2:'Words of Affirmation 33%', 9:'Words of Affirmation — say it out loud' },
+      hd:      { 0:'Projector — energy in bursts', 2:'Success / Bitterness', 3:'Splenic — gut decisions', 6:'1/3 Investigator / Martyr', 11:'wait' }
+    }
+  };
+  const CLASH = 11;
+  const counts = M.traits.map((_, ci) => M.tests.filter(t => M.support[t.k][ci] !== undefined).length);
+
+  let head = '<thead><tr><th class="corner">Test \\ Trait</th>';
+  M.traits.forEach((tr, ci) => {
+    const clash = ci === CLASH;
+    const strong = counts[ci] >= 3;
+    const cntLabel = clash ? '3 vs 1' : counts[ci] + '/6';
+    head += '<th class="' + (clash ? 'clash' : (strong ? 'strong' : '')) + '">' + tr + '<span class="cnt">' + cntLabel + '</span></th>';
+  });
+  head += '</tr></thead>';
+
+  let body = '<tbody>';
+  M.tests.forEach(t => {
+    body += '<tr><th><span class="chip" style="background:' + t.c + '"></span>' + t.n + '</th>';
+    M.traits.forEach((_, ci) => {
+      const val = M.support[t.k][ci];
+      const clashCell = ci === CLASH ? ' clash' : '';
+      if (val === undefined) {
+        body += '<td class="' + clashCell.trim() + '"><span class="m-empty">·</span></td>';
+      } else if (val === 'init') {
+        body += '<td class="' + clashCell.trim() + '"><span class="m-dot" style="background:#27ae60" title="Initiates — track record of starting things"></span></td>';
+      } else if (val === 'wait') {
+        body += '<td class="' + clashCell.trim() + '"><span class="m-dot" style="background:#e0393e" title="Says wait for invitation — contradicts every other test"></span></td>';
+      } else {
+        body += '<td class="' + clashCell.trim() + '"><span class="m-dot" style="background:' + t.c + '" title="' + val.replace(/"/g,'&quot;') + '"></span></td>';
+      }
+    });
+    body += '</tr>';
+  });
+  body += '</tbody>';
+  document.getElementById('matrix-table').innerHTML = head + body;
 </script>
 </body>
 </html>
